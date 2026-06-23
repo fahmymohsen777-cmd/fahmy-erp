@@ -1,0 +1,40 @@
+{
+  "name": "فحم",
+  "short_name": "فحم ERP",
+  "description": "نظام إدارة توزيع الفحم",
+  "start_url": "/dashboard",
+  "display": "standalone",
+  "background_color": "#08080f",
+  "theme_color": "#08080f",
+  "orientation": "portrait-primary",
+  "lang": "ar",
+  "dir": "rtl",
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [],
+  "categories": ["business", "productivity"],
+  "shortcuts": [
+    {
+      "name": "لوحة التحكم",
+      "url": "/dashboard",
+      "description": "فتح لوحة التحكم الرئيسية"
+    },
+    {
+      "name": "طلب جديد",
+      "url": "/orders",
+      "description": "إنشاء طلب توصيل جديد"
+    }
+  ]
+}
