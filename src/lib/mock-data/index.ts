@@ -1,5 +1,4 @@
 import {
-  User,
   Customer,
   Supplier,
   InventoryItem,
@@ -13,7 +12,7 @@ import {
   CharcoalType
 } from '../types';
 
-export const mockUsers: User[] = [];
+export const mockUsers: any[] = [];
 
 export const mockCustomers: Customer[] = [];
 

@@ -351,7 +351,7 @@ function AddOrderModal({ customers, drivers, onClose, onAdd }: { customers: Cust
         quantity,
         customer_id,
         order_id: newOrder.id,
-        notes: `طلب رقم ${newOrder.order_number}`
+        notes: `طلب رقم ${order_number}`
       });
       if (movErr) throw movErr;
 

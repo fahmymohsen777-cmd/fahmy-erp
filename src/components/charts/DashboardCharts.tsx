@@ -59,7 +59,7 @@ export function DailySalesChart({ data }: SalesChartProps) {
           <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
           <XAxis dataKey="date" tick={{ fill: 'var(--text-muted)', fontSize: 11, fontFamily: 'Cairo' }} axisLine={false} tickLine={false} />
           <YAxis tick={{ fill: 'var(--text-muted)', fontSize: 11 }} axisLine={false} tickLine={false} />
-          <Tooltip contentStyle={tooltipStyle} formatter={(v: number) => [`${v.toLocaleString('ar-EG')} ج`, 'المبيعات']} />
+          <Tooltip contentStyle={tooltipStyle} formatter={(v: any) => [`${v.toLocaleString('ar-EG')} ج`, 'المبيعات']} />
           <Area type="monotone" dataKey="value" stroke="#f59e0b" strokeWidth={2.5} fill="url(#salesGrad)" dot={false} activeDot={{ r: 5, fill: '#f59e0b' }} />
         </AreaChart>
       </ResponsiveContainer>
@@ -87,7 +87,7 @@ export function MonthlyProfitChart({ data }: MonthlyChartProps) {
           <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" vertical={false} />
           <XAxis dataKey="date" tick={{ fill: 'var(--text-muted)', fontSize: 11, fontFamily: 'Cairo' }} axisLine={false} tickLine={false} />
           <YAxis tick={{ fill: 'var(--text-muted)', fontSize: 11 }} axisLine={false} tickLine={false} />
-          <Tooltip contentStyle={tooltipStyle} formatter={(v: number) => [`${v.toLocaleString('ar-EG')} ج`, 'الربح']} />
+          <Tooltip contentStyle={tooltipStyle} formatter={(v: any) => [`${v.toLocaleString('ar-EG')} ج`, 'الربح']} />
           <Bar dataKey="value" fill="url(#profitGrad)" radius={[6, 6, 0, 0]} maxBarSize={48} />
         </BarChart>
       </ResponsiveContainer>
@@ -115,7 +115,7 @@ export function CashFlowChart({ data }: CashFlowProps) {
           <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
           <XAxis dataKey="date" tick={{ fill: 'var(--text-muted)', fontSize: 11, fontFamily: 'Cairo' }} axisLine={false} tickLine={false} />
           <YAxis tick={{ fill: 'var(--text-muted)', fontSize: 11 }} axisLine={false} tickLine={false} />
-          <Tooltip contentStyle={tooltipStyle} formatter={(v: number, name: string) => [`${v.toLocaleString('ar-EG')} ج`, name === 'revenue' ? 'الإيرادات' : 'المصروفات']} />
+          <Tooltip contentStyle={tooltipStyle} formatter={(v: any, name: any) => [`${v.toLocaleString('ar-EG')} ج`, name === 'revenue' ? 'الإيرادات' : 'المصروفات']} />
           <Legend formatter={(v) => v === 'revenue' ? 'الإيرادات' : 'المصروفات'} wrapperStyle={{ fontFamily: 'Cairo', fontSize: 12, color: 'var(--text-secondary)' }} />
           <Area type="monotone" dataKey="revenue" stroke="#3b82f6" strokeWidth={2} fill="url(#revGrad)" dot={false} />
           <Line type="monotone" dataKey="expenses" stroke="#f43f5e" strokeWidth={2} dot={false} strokeDasharray="4 2" />
@@ -139,7 +139,7 @@ export function TopCustomersChart({ data }: TopCustomersChartProps) {
           <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" horizontal={false} />
           <XAxis type="number" tick={{ fill: 'var(--text-muted)', fontSize: 10 }} axisLine={false} tickLine={false} />
           <YAxis dataKey="name" type="category" tick={{ fill: 'var(--text-secondary)', fontSize: 11, fontFamily: 'Cairo' }} axisLine={false} tickLine={false} width={80} />
-          <Tooltip contentStyle={tooltipStyle} formatter={(v: number) => [`${v.toLocaleString('ar-EG')} ج`, 'المشتريات']} />
+          <Tooltip contentStyle={tooltipStyle} formatter={(v: any) => [`${v.toLocaleString('ar-EG')} ج`, 'المشتريات']} />
           <Bar dataKey="value" fill="#f59e0b" radius={[0, 6, 6, 0]} maxBarSize={24} />
         </BarChart>
       </ResponsiveContainer>
@@ -173,7 +173,7 @@ export function CharcoalTypesPieChart({ data }: CharcoalTypesPieProps) {
                 <Cell key={`cell-${index}`} fill={entry.color} />
               ))}
             </Pie>
-            <Tooltip contentStyle={tooltipStyle} formatter={(v: number) => [`${v}%`, 'النسبة']} />
+            <Tooltip contentStyle={tooltipStyle} formatter={(v: any) => [`${v}%`, 'النسبة']} />
           </PieChart>
         </ResponsiveContainer>
 
