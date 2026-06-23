@@ -161,7 +161,7 @@ export default function OrdersPage() {
           />
         </div>
         <div style={{ background: 'var(--color-surface-2)', border: '1px solid var(--color-border)', borderRadius: 10, padding: '0.5rem 1rem', fontSize: '0.85rem', color: 'var(--color-amber)', fontWeight: 700 }}>
-          {formatCurrency(filtered.reduce((sum, o) => sum + o.total_amount, 0))}
+          {formatCurrency(filtered.reduce((sum, o) => sum + (o.total_amount ?? 0), 0))}
         </div>
         <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
           <input 
