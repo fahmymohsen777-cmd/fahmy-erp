@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation';
 import { motion } from 'framer-motion';
 import {
   Phone, MessageCircle, MapPin, Package, CreditCard,
-  ArrowRight, Plus, TrendingUp, Clock, CheckCircle,
+  ArrowRight, Plus, TrendingUp, Clock, CheckCircle, Share2
 } from 'lucide-react';
 import { formatCurrency, formatDate, getOrderStatusLabel, getOrderStatusColor } from '@/lib/utils';
 import Link from 'next/link';
@@ -151,7 +151,7 @@ export default function CustomerProfilePage({ params }: { params: Promise<{ id: 
                 <MapPin size={14} /> {customer.address}
                 <button 
                   onClick={() => {
-                    const text = encodeURIComponent(`📍 موقع العميل: ${customer.cafe_name}\nالعنوان: ${customer.address}`);
+                    const text = encodeURIComponent(`📍 موقع العميل: ${customer.cafe_name}\nالعنوان: ${customer.address}\n🗺️ خريطة جوجل: https://maps.google.com/?q=${encodeURIComponent(customer.address)}`);
                     window.open(`https://wa.me/?text=${text}`, '_blank');
                   }}
                   className="btn-ghost" 
@@ -172,13 +172,13 @@ export default function CustomerProfilePage({ params }: { params: Promise<{ id: 
             <div style={{ display: 'flex', gap: '0.5rem', background: 'var(--color-surface-2)', padding: '0.25rem', borderRadius: 8 }}>
               <button 
                 onClick={() => {
-                  const text = encodeURIComponent(`📄 *بيانات العميل*\n\nالاسم: ${customer.cafe_name}\nالمالك: ${customer.owner_name || 'غير محدد'}\nالعنوان: ${customer.address}\nرقم الهاتف: ${customer.phone || 'غير محدد'}\nالاستهلاك المتوقع: ${customer.monthly_consumption || 0} شيكارة\n\n💰 *الحساب*\nالمشتريات: ${formatCurrency(balance?.total_purchases || 0)}\nالمدفوعات: ${formatCurrency(balance?.total_payments || 0)}\nالرصيد المتبقي: ${formatCurrency(balance?.outstanding_balance || 0)}`);
+                  const text = encodeURIComponent(`📄 *بيانات العميل*\n\nالاسم: ${customer.cafe_name}\nالمالك: ${customer.owner_name || 'غير محدد'}\nالعنوان: ${customer.address}\n🗺️ خريطة جوجل: https://maps.google.com/?q=${encodeURIComponent(customer.address)}\n📞 رقم الهاتف: ${customer.phone || 'غير محدد'}\n📦 الاستهلاك المتوقع: ${customer.monthly_consumption || 0} شيكارة\n\n💰 *الحساب*\nالمشتريات: ${formatCurrency(balance?.total_purchases || 0)}\nالمدفوعات: ${formatCurrency(balance?.total_payments || 0)}\nالرصيد المتبقي: ${formatCurrency(balance?.outstanding_balance || 0)}`);
                   window.open(`https://wa.me/?text=${text}`, '_blank');
                 }}
                 className="btn-secondary" 
                 style={{ padding: '0.4rem 0.8rem', fontSize: '0.85rem', color: '#25D366' }}
               >
-                <MessageCircle size={14} /> واتساب
+                <Share2 size={14} /> مشاركة البيانات
               </button>
               <a href={`tel:${customer.phone}`} className="btn-secondary" style={{ padding: '0.5rem 1rem' }}>
                 <Phone size={16} /> اتصال
