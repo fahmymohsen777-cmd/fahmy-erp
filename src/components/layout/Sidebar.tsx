@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   LayoutDashboard, Users, Truck, Package, ShoppingCart,
@@ -31,7 +31,18 @@ interface SidebarProps {
 
 export function Sidebar({ notifCount = 0, mobileOpen = false, onMobileClose }: SidebarProps) {
   const pathname = usePathname();
+  const router = useRouter();
   const [collapsed, setCollapsed] = useState(false);
+
+  const handleLogout = async () => {
+    try {
+      await fetch('/api/auth/logout', { method: 'POST' });
+      router.push('/login');
+      router.refresh();
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
   return (
     <>
@@ -103,6 +114,7 @@ export function Sidebar({ notifCount = 0, mobileOpen = false, onMobileClose }: S
         {/* Footer */}
         <div style={{ borderTop: '1px solid var(--color-border)', padding: '12px 8px' }}>
           <button
+            onClick={handleLogout}
             className="sidebar-nav-item w-full"
             style={{ color: 'var(--color-danger)', width: '100%' }}
           >
