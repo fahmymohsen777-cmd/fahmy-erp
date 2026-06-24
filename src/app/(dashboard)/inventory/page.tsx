@@ -7,8 +7,10 @@ import { InventoryItem, InventoryMovement } from '@/lib/types';
 import { createClient } from '@/lib/supabase/client';
 import toast from 'react-hot-toast';
 import { exportToExcel, printToPDF } from '@/lib/exportUtils';
+import { useAuth } from '@/lib/store/authStore';
 
 export default function InventoryPage() {
+  const { role } = useAuth();
   const [inventory, setInventory] = useState<InventoryItem[]>([]);
   const [movements, setMovements] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -155,9 +157,11 @@ export default function InventoryPage() {
       
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <h1 style={{ fontSize: '1.5rem', fontWeight: 800 }}>إدارة المخزون</h1>
-        <button className="btn-primary" onClick={() => setShowAdjustmentModal(true)}>
-          <Plus size={16} /> تسوية جردية (تالف/مرتجع)
-        </button>
+        {role === 'admin' && (
+          <button className="btn-primary" onClick={() => setShowAdjustmentModal(true)}>
+            <Plus size={18} /> تسوية المخزون
+          </button>
+        )}
       </div>
 
       {/* Summary Cards */}

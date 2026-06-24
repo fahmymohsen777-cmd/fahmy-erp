@@ -7,6 +7,7 @@ import { OrderStatus, Order, Customer, Profile } from '@/lib/types';
 import { createClient } from '@/lib/supabase/client';
 import toast from 'react-hot-toast';
 import { exportToExcel, printToPDF } from '@/lib/exportUtils';
+import { useAuth } from '@/lib/store/authStore';
 
 const statusTabs: { value: 'all' | OrderStatus; label: string; icon: React.ReactNode }[] = [
   { value: 'all', label: 'الكل', icon: <Filter size={15} /> },
@@ -17,6 +18,7 @@ const statusTabs: { value: 'all' | OrderStatus; label: string; icon: React.React
 ];
 
 export default function OrdersPage() {
+  const { role } = useAuth();
   const [orders, setOrders] = useState<Order[]>([]);
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [drivers, setDrivers] = useState<Profile[]>([]);
@@ -186,7 +188,9 @@ export default function OrdersPage() {
           <button onClick={handleExportExcel} className="btn-secondary" style={{ padding: '0.5rem 1rem', fontSize: '0.82rem' }}>
             <FileDown size={16} /> Excel
           </button>
-          <button className="btn-primary" onClick={() => setShowCreateModal(true)}><Plus size={16} /> طلب جديد</button>
+          {role === 'admin' && (
+            <button className="btn-primary" onClick={() => setShowCreateModal(true)}><Plus size={16} /> طلب جديد</button>
+          )}
         </div>
       </div>
 

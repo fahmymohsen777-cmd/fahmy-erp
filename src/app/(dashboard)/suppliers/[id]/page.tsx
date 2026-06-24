@@ -1,15 +1,17 @@
 'use client';
 import { use, useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Phone, MapPin, Package, CreditCard, ArrowRight, Plus, TrendingDown, CheckCircle, Clock, Truck, X, FileText, FileDown } from 'lucide-react';
+import { Phone, MapPin, Package, CreditCard, ArrowRight, Plus, TrendingDown, CheckCircle, Clock, Truck, X, FileText, FileDown, DollarSign } from 'lucide-react';
 import { formatCurrency, formatDate } from '@/lib/utils';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/client';
 import toast from 'react-hot-toast';
 import { exportToExcel, printToPDF } from '@/lib/exportUtils';
+import { useAuth } from '@/lib/store/authStore';
 
 export default function SupplierProfilePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
+  const { role } = useAuth();
   
   const [supplier, setSupplier] = useState<any>(null);
   const [balance, setBalance] = useState<any>(null);
@@ -160,12 +162,16 @@ export default function SupplierProfilePage({ params }: { params: Promise<{ id: 
               <button onClick={handleExportExcel} className="btn-secondary" style={{ padding: '0.4rem 0.8rem', fontSize: '0.85rem' }}>
                 <FileDown size={14} /> Excel
               </button>
-              <button onClick={() => setShowPaymentModal(true)} className="btn-secondary" style={{ padding: '0.4rem 0.8rem', fontSize: '0.85rem' }}>
-                <CreditCard size={14} /> تسديد دفعة
-              </button>
-              <button onClick={() => setShowOrderModal(true)} className="btn-primary" style={{ padding: '0.4rem 0.8rem', fontSize: '0.85rem' }}>
-                <Plus size={14} /> إضافة طلبية واردة
-              </button>
+              {role === 'admin' && (
+                <>
+                  <button onClick={() => setShowPaymentModal(true)} className="btn-secondary" style={{ padding: '0.4rem 0.8rem', fontSize: '0.85rem' }}>
+                    <DollarSign size={16} /> سداد دفعة
+                  </button>
+                  <button onClick={() => setShowOrderModal(true)} className="btn-primary" style={{ padding: '0.4rem 0.8rem', fontSize: '0.85rem' }}>
+                    <Plus size={16} /> طلبية جديدة
+                  </button>
+                </>
+              )}
             </div>
           </div>
 

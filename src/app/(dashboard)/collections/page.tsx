@@ -5,8 +5,10 @@ import { Plus, CreditCard, CheckCircle, Clock, DollarSign, X, TrendingUp } from 
 import { formatCurrency, formatDate } from '@/lib/utils';
 import { createClient } from '@/lib/supabase/client';
 import toast from 'react-hot-toast';
+import { useAuth } from '@/lib/store/authStore';
 
 export default function CollectionsPage() {
+  const { role } = useAuth();
   const [payments, setPayments] = useState<any[]>([]);
   const [customerBalances, setCustomerBalances] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -75,9 +77,11 @@ export default function CollectionsPage() {
       {/* Toolbar */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <h2 style={{ fontSize: '1rem', fontWeight: 700 }}>العملاء المطالبين بالسداد</h2>
-        <button className="btn-primary" onClick={() => handleOpenAddModal()}>
-          <Plus size={16} /> تسجيل دفعة جديدة
-        </button>
+        {role === 'admin' && (
+          <button className="btn-primary" onClick={() => handleOpenAddModal()}>
+            <Plus size={16} /> تسجيل دفعة جديدة
+          </button>
+        )}
       </div>
 
       {/* Customers with Debt */}
@@ -109,9 +113,11 @@ export default function CollectionsPage() {
                 <span>مدفوع: {formatCurrency(Number(customer.total_payments))}</span>
                 <span>الكل: {formatCurrency(Number(customer.total_purchases))}</span>
               </div>
-              <button className="btn-primary" style={{ width: '100%', fontSize: '0.82rem', padding: '0.5rem' }} onClick={() => handleOpenAddModal(customer.id)}>
-                <CreditCard size={14} /> تسجيل دفعة
-              </button>
+              {role === 'admin' && (
+                <button className="btn-primary" style={{ width: '100%', fontSize: '0.82rem', padding: '0.5rem' }} onClick={() => handleOpenAddModal(customer.id)}>
+                  <Plus size={14} /> سداد دفعة
+                </button>
+              )}
             </motion.div>
           ))}
           {customerBalances.filter(c => Number(c.outstanding_balance) > 0).length === 0 && (

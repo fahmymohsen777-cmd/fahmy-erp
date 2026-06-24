@@ -8,8 +8,10 @@ import { createClient } from '@/lib/supabase/client';
 import toast from 'react-hot-toast';
 import Link from 'next/link';
 import { Eye } from 'lucide-react';
+import { useAuth } from '@/lib/store/authStore';
 
 export default function SuppliersPage() {
+  const { role } = useAuth();
   const [suppliers, setSuppliers] = useState<Supplier[]>([]);
   const [loading, setLoading] = useState(true);
   const [showAdd, setShowAdd] = useState(false);
@@ -60,7 +62,9 @@ export default function SuppliersPage() {
 
       {/* Toolbar */}
       <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-        <button className="btn-primary" onClick={() => setShowAdd(true)}><Plus size={16} /> إضافة مورد</button>
+        {role === 'admin' && (
+          <button className="btn-primary" onClick={() => setShowAdd(true)}><Plus size={16} /> إضافة مورد</button>
+        )}
       </div>
 
       {/* Supplier Cards */}

@@ -6,8 +6,10 @@ import { formatCurrency, formatDate } from '@/lib/utils';
 import { createClient } from '@/lib/supabase/client';
 import toast from 'react-hot-toast';
 import { exportToExcel, printToPDF } from '@/lib/exportUtils';
+import { useAuth } from '@/lib/store/authStore';
 
 export default function ExpensesPage() {
+  const { role } = useAuth();
   const [expenses, setExpenses] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [showAddModal, setShowAddModal] = useState(false);
@@ -135,9 +137,11 @@ export default function ExpensesPage() {
           <button className="btn-secondary" style={{ fontSize: '0.82rem', padding: '0.5rem' }} onClick={handleExportExcel}>
             <FileDown size={15} /> Excel
           </button>
-          <button className="btn-primary" onClick={() => setShowAddModal(true)}>
-            <Plus size={16} /> إضافة مصروف
-          </button>
+          {role === 'admin' && (
+            <button className="btn-primary" onClick={() => setShowAddModal(true)}>
+              <Plus size={16} /> إضافة مصروف
+            </button>
+          )}
         </div>
       </div>
 
@@ -164,9 +168,11 @@ export default function ExpensesPage() {
                   <td style={{ fontWeight: 700, color: 'var(--color-danger)' }}>{formatCurrency(exp.amount)}</td>
                   <td style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>{formatDate(exp.expense_date)}</td>
                   <td>
+                  {role === 'admin' && (
                     <button onClick={() => handleDelete(exp.id)} className="btn-ghost" style={{ padding: '0.4rem', color: 'var(--color-danger)' }}>
                       <Trash2 size={16} />
                     </button>
+                  )}
                   </td>
                 </motion.tr>
               ))}

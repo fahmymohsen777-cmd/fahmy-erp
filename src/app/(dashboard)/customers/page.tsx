@@ -9,8 +9,10 @@ import { createClient } from '@/lib/supabase/client';
 import toast from 'react-hot-toast';
 import { exportToExcel, printToPDF } from '@/lib/exportUtils';
 import { FileText, FileDown } from 'lucide-react';
+import { useAuth } from '@/lib/store/authStore';
 
 export default function CustomersPage() {
+  const { role } = useAuth();
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
@@ -123,9 +125,11 @@ export default function CustomersPage() {
             <FileDown size={15} /> Excel
           </button>
         </div>
-        <button className="btn-primary" style={{ whiteSpace: 'nowrap' }} onClick={() => setShowAddModal(true)}>
-          <Plus size={16} /> إضافة عميل
-        </button>
+        {role === 'admin' && (
+          <button className="btn-primary" style={{ whiteSpace: 'nowrap' }} onClick={() => setShowAddModal(true)}>
+            <Plus size={16} /> عميل جديد
+          </button>
+        )}
       </div>
 
       {/* Customer Cards */}

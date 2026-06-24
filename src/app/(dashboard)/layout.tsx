@@ -1,8 +1,9 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Sidebar } from '@/components/layout/Sidebar';
 import { Topbar } from '@/components/layout/Topbar';
 import { usePathname } from 'next/navigation';
+import { useAuth } from '@/lib/store/authStore';
 
 const pageTitles: Record<string, { title: string; subtitle?: string }> = {
   '/dashboard': { title: 'لوحة التحكم', subtitle: 'مرحباً بك في نظام فحم' },
@@ -21,6 +22,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
   const unreadNotifs = 0; // Will be implemented with real notifications later
+  const { fetchUser } = useAuth();
+
+  useEffect(() => {
+    fetchUser();
+  }, [fetchUser]);
 
   const pageKey = Object.keys(pageTitles).find(k => pathname === k || pathname.startsWith(k + '/')) || '/dashboard';
   const pageInfo = pageTitles[pageKey] || { title: 'فحم' };

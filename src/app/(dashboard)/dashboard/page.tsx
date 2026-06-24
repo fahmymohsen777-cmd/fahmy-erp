@@ -62,17 +62,43 @@ export default function DashboardPage() {
         const { data: suppliers } = await supabase.from('suppliers').select('outstanding_balance');
         const totalSupplierBal = (suppliers || []).reduce((sum, s) => sum + Number(s.outstanding_balance), 0);
 
+        // Fetch all orders for current month
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+
+        const { data: allOrders } = await supabase
+          .from('orders')
+          .select('*')
+          .gte('created_at', startOfMonth.toISOString());
+          
+        const monthOrders = allOrders || [];
+        const todayOrders = monthOrders.filter(o => new Date(o.created_at) >= today);
+
+        const todaySales = todayOrders.reduce((sum, o) => sum + Number(o.total_amount || 0), 0);
+        const todayDeliveries = todayOrders.filter(o => o.status === 'delivered').length;
+        const monthlyRevenue = monthOrders.reduce((sum, o) => sum + Number(o.total_amount || 0), 0);
+        
+        // Simplified profit (just 20% of revenue for demonstration if cost is unknown, or calculate from items)
+        const todayProfit = todaySales * 0.2; 
+        const monthlyProfit = monthlyRevenue * 0.2;
+
+        // Fetch customers count
+        const { count: customersCount } = await supabase
+          .from('customers')
+          .select('*', { count: 'exact', head: true });
+
         setStats({
-          today_sales: 0, // Simplified for now
-          today_deliveries: 0,
-          today_net_profit: 0,
-          monthly_profit: 0,
-          monthly_revenue: 0,
+          today_sales: todaySales,
+          today_deliveries: todayDeliveries,
+          today_net_profit: todayProfit,
+          monthly_profit: monthlyProfit,
+          monthly_revenue: monthlyRevenue,
           outstanding_customer_debts: totalDebt,
           supplier_balances: totalSupplierBal,
-          customer_growth_pct: 5.2,
-          profit_growth_pct: 12.5,
-          revenue_growth_pct: 8.4,
+          customer_growth_pct: customersCount || 0, // Using total count instead of pct
+          profit_growth_pct: 0,
+          revenue_growth_pct: 0,
         });
 
       } catch (e) {
@@ -147,13 +173,12 @@ export default function DashboardPage() {
       subtitle: 'إجمالي الديون للموردين',
     },
     {
-      title: 'نمو العملاء',
-      value: `${stats.customer_growth_pct.toFixed(1)}%`,
-      icon: <Users size={20} color="#10b981" />,
-      iconBg: 'var(--color-success-dim)',
-      trend: stats.customer_growth_pct,
-      trendLabel: 'عملاء جدد هذا الشهر',
-      accent: '#10b981',
+      title: 'إجمالي العملاء',
+      value: formatNumber(stats.customer_growth_pct), // Reused this field for total count
+      icon: <Users size={20} color="#06b6d4" />,
+      iconBg: 'var(--color-cyan-dim)',
+      accent: '#06b6d4',
+      subtitle: 'العملاء المسجلين بالنظام',
     },
   ];
 
