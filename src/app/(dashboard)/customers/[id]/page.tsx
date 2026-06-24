@@ -149,6 +149,17 @@ export default function CustomerProfilePage({ params }: { params: Promise<{ id: 
             <div style={{ display: 'flex', gap: '1rem', marginTop: '0.75rem', flexWrap: 'wrap' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: '0.85rem', color: 'var(--text-muted)' }}>
                 <MapPin size={14} /> {customer.address}
+                <button 
+                  onClick={() => {
+                    const text = encodeURIComponent(`📍 موقع العميل: ${customer.cafe_name}\nالعنوان: ${customer.address}`);
+                    window.open(`https://wa.me/?text=${text}`, '_blank');
+                  }}
+                  className="btn-ghost" 
+                  style={{ padding: '0.2rem', color: '#25D366' }}
+                  title="مشاركة الموقع عبر واتساب"
+                >
+                  <MessageCircle size={14} />
+                </button>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: '0.85rem', color: 'var(--text-muted)' }}>
                 <Package size={14} /> الاستهلاك المتوقع: {customer.monthly_consumption || 0} شيكارة
@@ -158,12 +169,24 @@ export default function CustomerProfilePage({ params }: { params: Promise<{ id: 
 
           {/* Actions */}
           <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-            <a href={`tel:${customer.phone}`} className="btn-secondary" style={{ padding: '0.5rem 1rem' }}>
-              <Phone size={16} /> اتصال
-            </a>
-            <a href={`https://wa.me/2${customer.whatsapp || customer.phone}`} target="_blank" rel="noopener" className="btn-secondary" style={{ padding: '0.5rem 1rem', color: '#25d366' }}>
-              <MessageCircle size={16} /> واتساب
-            </a>
+            <div style={{ display: 'flex', gap: '0.5rem', background: 'var(--color-surface-2)', padding: '0.25rem', borderRadius: 8 }}>
+              <button 
+                onClick={() => {
+                  const text = encodeURIComponent(`📄 *بيانات العميل*\n\nالاسم: ${customer.cafe_name}\nالمالك: ${customer.owner_name || 'غير محدد'}\nالعنوان: ${customer.address}\nرقم الهاتف: ${customer.phone || 'غير محدد'}\nالاستهلاك المتوقع: ${customer.monthly_consumption || 0} شيكارة\n\n💰 *الحساب*\nالمشتريات: ${formatCurrency(balance?.total_purchases || 0)}\nالمدفوعات: ${formatCurrency(balance?.total_payments || 0)}\nالرصيد المتبقي: ${formatCurrency(balance?.outstanding_balance || 0)}`);
+                  window.open(`https://wa.me/?text=${text}`, '_blank');
+                }}
+                className="btn-secondary" 
+                style={{ padding: '0.4rem 0.8rem', fontSize: '0.85rem', color: '#25D366' }}
+              >
+                <MessageCircle size={14} /> واتساب
+              </button>
+              <a href={`tel:${customer.phone}`} className="btn-secondary" style={{ padding: '0.5rem 1rem' }}>
+                <Phone size={16} /> اتصال
+              </a>
+              <a href={`https://wa.me/2${customer.whatsapp || customer.phone}`} target="_blank" rel="noopener" className="btn-secondary" style={{ padding: '0.5rem 1rem', color: '#25d366' }}>
+                <MessageCircle size={16} /> واتساب
+              </a>
+            </div>
           </div>
         </div>
       </motion.div>
