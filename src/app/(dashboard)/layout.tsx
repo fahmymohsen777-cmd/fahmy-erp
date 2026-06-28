@@ -28,6 +28,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     fetchUser();
   }, [fetchUser]);
 
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [pathname]);
+
   const pageKey = Object.keys(pageTitles).find(k => pathname === k || pathname.startsWith(k + '/')) || '/dashboard';
   const pageInfo = pageTitles[pageKey] || { title: 'فحم' };
 

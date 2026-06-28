@@ -1,12 +1,12 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Plus, Search, Filter, Truck, Package, CheckCircle, Clock, X, FileDown, FileText, DollarSign } from 'lucide-react';
+import { Plus, Search, Filter, Truck, Package, CheckCircle, Clock, X, FileDown, FileText, DollarSign, Printer } from 'lucide-react';
 import { formatCurrency, formatDate, getOrderStatusLabel, getOrderStatusColor, getCharcoalTypeLabel } from '@/lib/utils';
 import { OrderStatus, Order, Customer, Profile } from '@/lib/types';
 import { createClient } from '@/lib/supabase/client';
 import toast from 'react-hot-toast';
-import { exportToExcel, printToPDF } from '@/lib/exportUtils';
+import { exportToExcel, printToPDF, printOrderInvoice } from '@/lib/exportUtils';
 import { useAuth } from '@/lib/store/authStore';
 
 const statusTabs: { value: 'all' | OrderStatus; label: string; icon: React.ReactNode }[] = [
@@ -248,30 +248,40 @@ export default function OrdersPage() {
                       {getOrderStatusLabel(order.status)}
                     </span>
                   </td>
-                  <td>
-                    <select
-                      className="input-field"
-                      style={{ padding: '0.3rem', fontSize: '0.75rem', height: 'auto', minWidth: 100 }}
-                      value={order.status}
-                      onChange={async (e) => {
-                        const newStatus = e.target.value;
-                        const tId = toast.loading('جاري التحديث...');
-                        try {
-                          const { error } = await supabase.from('orders').update({ status: newStatus }).eq('id', order.id);
-                          if (error) throw error;
-                          toast.success('تم تحديث الحالة', { id: tId });
-                          fetchData();
-                        } catch (err) {
-                          console.error(err);
-                          toast.error('خطأ في التحديث', { id: tId });
-                        }
-                      }}
+                  <td style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                    {role === 'admin' && (
+                      <select
+                        className="input-field"
+                        style={{ padding: '0.3rem', fontSize: '0.75rem', height: 'auto', minWidth: 100 }}
+                        value={order.status}
+                        onChange={async (e) => {
+                          const newStatus = e.target.value;
+                          const tId = toast.loading('جاري التحديث...');
+                          try {
+                            const { error } = await supabase.from('orders').update({ status: newStatus }).eq('id', order.id);
+                            if (error) throw error;
+                            toast.success('تم تحديث الحالة', { id: tId });
+                            fetchData();
+                          } catch (err) {
+                            console.error(err);
+                            toast.error('خطأ في التحديث', { id: tId });
+                          }
+                        }}
+                      >
+                        <option value="pending">معلق</option>
+                        <option value="in_delivery">جاري التوصيل</option>
+                        <option value="delivered">تم التسليم</option>
+                        <option value="collected">تم التحصيل</option>
+                      </select>
+                    )}
+                    <button
+                      onClick={() => printOrderInvoice(order)}
+                      className="btn-ghost"
+                      title="طباعة فاتورة"
+                      style={{ padding: '0.4rem', color: 'var(--color-amber)' }}
                     >
-                      <option value="pending">معلق</option>
-                      <option value="in_delivery">جاري التوصيل</option>
-                      <option value="delivered">تم التسليم</option>
-                      <option value="collected">تم التحصيل</option>
-                    </select>
+                      <Printer size={16} />
+                    </button>
                   </td>
                 </motion.tr>
               ))}
