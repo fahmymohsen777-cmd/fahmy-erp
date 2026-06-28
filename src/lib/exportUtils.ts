@@ -267,7 +267,6 @@ export function printOrderInvoice(order: any) {
       <div class="invoice-container">
         <div class="header">
           <div class="header-logo">
-            <span style="background: #f97316; color: #fff; padding: 5px 12px; border-radius: 8px;">فحم</span>
             <span>نظام إدارة التوزيع</span>
           </div>
           <div class="header-info">
@@ -278,20 +277,13 @@ export function printOrderInvoice(order: any) {
 
         <div class="title">فاتورة مبيعات - رقم ${order.order_number || order.id?.slice(0,6).toUpperCase()}</div>
 
-        <div class="details-grid">
+        <div class="details-grid" style="grid-template-columns: 1fr;">
           <div class="details-box">
             <h3>بيانات العميل</h3>
             <p><strong>اسم الكافيه:</strong> ${order.customer?.cafe_name || 'غير محدد'}</p>
             <p><strong>اسم المالك:</strong> ${order.customer?.owner_name || 'غير محدد'}</p>
             <p><strong>العنوان:</strong> ${order.customer?.address || 'غير محدد'}</p>
             <p><strong>رقم الهاتف:</strong> ${order.customer?.phone || 'غير محدد'}</p>
-          </div>
-          <div class="details-box">
-            <h3>بيانات الطلب</h3>
-            <p><strong>حالة الطلب:</strong> ${order.status === 'delivered' ? 'تم التوصيل' : order.status === 'cancelled' ? 'ملغي' : 'قيد الانتظار'}</p>
-            <p><strong>السائق:</strong> ${order.driver_name || 'غير محدد'}</p>
-            <p><strong>طريقة الدفع:</strong> ${order.payment_status === 'paid' ? 'مدفوع' : 'آجل / عليه دين'}</p>
-            <p><strong>ملاحظات:</strong> ${order.notes || 'لا يوجد'}</p>
           </div>
         </div>
 
@@ -301,7 +293,7 @@ export function printOrderInvoice(order: any) {
               <th style="width: 50px;">م</th>
               <th>الصنف (نوع الفحم)</th>
               <th style="width: 100px;">الكمية (شيكارة)</th>
-              <th style="width: 150px;">السعر الإفرادي</th>
+              <th style="width: 150px;">السعر</th>
               <th style="width: 150px;">المجموع</th>
             </tr>
           </thead>
