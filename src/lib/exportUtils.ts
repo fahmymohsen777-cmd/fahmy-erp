@@ -303,8 +303,8 @@ export function printOrderInvoice(order: any) {
                 <td style="text-align: center;">${idx + 1}</td>
                 <td>فحم ${item.charcoal_type === 'citrus' ? 'موالح' : item.charcoal_type === 'mango' ? 'مانجو' : item.charcoal_type === 'guava' ? 'جوافة' : item.charcoal_type === 'mixed' ? 'مختلط' : item.charcoal_type}</td>
                 <td style="text-align: center;">${item.quantity}</td>
-                <td>${formatCurrency(Number(item.unit_price))}</td>
-                <td style="font-weight: 600;">${formatCurrency(Number(item.total_price))}</td>
+                <td>${formatCurrency(Number(item.price_per_unit || 0))}</td>
+                <td style="font-weight: 600;">${formatCurrency(Number(item.total_price || (item.quantity * (item.price_per_unit || 0))))}</td>
               </tr>
             `).join('')}
           </tbody>
