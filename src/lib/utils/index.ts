@@ -6,8 +6,8 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function formatCurrency(amount: number, currency = 'EGP'): string {
-  return new Intl.NumberFormat('ar-EG', {
+export function formatCurrency(amount: number, currency = 'EGP', locale = 'ar-EG'): string {
+  return new Intl.NumberFormat(locale, {
     style: 'currency',
     currency,
     minimumFractionDigits: 0,
@@ -15,12 +15,12 @@ export function formatCurrency(amount: number, currency = 'EGP'): string {
   }).format(amount);
 }
 
-export function formatNumber(num: number): string {
-  return new Intl.NumberFormat('ar-EG').format(num);
+export function formatNumber(num: number, locale = 'ar-EG'): string {
+  return new Intl.NumberFormat(locale).format(num);
 }
 
-export function formatDate(date: string | Date): string {
-  return new Intl.DateTimeFormat('ar-EG', {
+export function formatDate(date: string | Date, locale = 'ar-EG'): string {
+  return new Intl.DateTimeFormat(locale, {
     year: 'numeric',
     month: 'long',
     day: 'numeric',

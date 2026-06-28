@@ -270,8 +270,8 @@ export function printOrderInvoice(order: any) {
             <span>نظام إدارة التوزيع</span>
           </div>
           <div class="header-info">
-            <p style="margin: 2px 0;">التاريخ: ${formatDate(order.created_at || new Date())}</p>
-            <p style="margin: 2px 0;">تاريخ التوصيل: ${formatDate(order.delivery_date)}</p>
+            <p style="margin: 2px 0;">التاريخ: ${formatDate(order.created_at || new Date(), 'en-US')}</p>
+            <p style="margin: 2px 0;">تاريخ التوصيل: ${formatDate(order.delivery_date, 'en-US')}</p>
           </div>
         </div>
 
@@ -303,8 +303,8 @@ export function printOrderInvoice(order: any) {
                 <td style="text-align: center;">${idx + 1}</td>
                 <td>فحم ${item.charcoal_type === 'citrus' ? 'موالح' : item.charcoal_type === 'mango' ? 'مانجو' : item.charcoal_type === 'guava' ? 'جوافة' : item.charcoal_type === 'mixed' ? 'مختلط' : item.charcoal_type}</td>
                 <td style="text-align: center;">${item.quantity}</td>
-                <td>${formatCurrency(Number(item.price_per_unit || 0))}</td>
-                <td style="font-weight: 600;">${formatCurrency(Number(item.total_price || (item.quantity * (item.price_per_unit || 0))))}</td>
+                <td>${formatCurrency(Number(item.price_per_unit || 0), 'EGP', 'en-US')}</td>
+                <td style="font-weight: 600;">${formatCurrency(Number(item.total_price || (item.quantity * (item.price_per_unit || 0))), 'EGP', 'en-US')}</td>
               </tr>
             `).join('')}
           </tbody>
@@ -317,7 +317,7 @@ export function printOrderInvoice(order: any) {
           </div>
           <div class="totals-row grand-total">
             <span>إجمالي الفاتورة:</span>
-            <span>${formatCurrency(subTotal)}</span>
+            <span>${formatCurrency(subTotal, 'EGP', 'en-US')}</span>
           </div>
         </div>
 
